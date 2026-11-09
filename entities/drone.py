@@ -116,7 +116,7 @@ class Drone:
 
         self.routing_protocol = self._create_routing_protocol()
 
-        self.mobility_model = self._create_mobility_model()
+        #self.mobility_model = self._create_mobility_model()
         # self.motion_controller = VfMotionController(self)
 
         self.energy_model = EnergyModel(self)
@@ -234,11 +234,16 @@ class Drone:
                     interval_us = 1e6 / arrival_rate
                 elif traffic_pattern == "POISSON":
                     interval_us = self.rng_drone.expovariate(arrival_rate) * 1e6
+                elif traffic_pattern == "PERIODIC":
+                    interval_us = 1e6 / arrival_rate
                 else:
                     raise ValueError(f"Unsupported traffic pattern: {config.TRAFFIC_PATTERN}")
                 yield self.env.timeout(max(1, round(interval_us)))
 
                 config.GL_ID_DATA_PACKET += 1  # data packet id
+
+
+                self.residual_energy = max(0.0, self.residual_energy - 1) #-----------------------------------------------------TODO NEEDS UPDATING--------------------------------------------------------
 
                 # randomly choose a destination
                 all_candidate_list = [i for i in range(self.simulator.n_drones)]

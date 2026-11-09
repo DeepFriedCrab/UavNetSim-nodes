@@ -6,7 +6,7 @@ from utils import config
 ROUTING_PARAMETER_DEFINITIONS = {
     "Greedy": {
         "hello_interval_s": {
-            "label": "HELLO interval", "unit": "s", "default": 0.5,
+            "label": "HELLO interval", "unit": "s", "default": 5,
             "minimum": 0.05, "maximum": 60.0, "step": 0.05,
         },
         "table_entry_lifetime_s": {
@@ -16,7 +16,7 @@ ROUTING_PARAMETER_DEFINITIONS = {
     },
     "DSDV": {
         "hello_interval_s": {
-            "label": "Update interval", "unit": "s", "default": 0.5,
+            "label": "Update interval", "unit": "s", "default": 5,
             "minimum": 0.05, "maximum": 60.0, "step": 0.05,
         },
         "purge_interval_s": {

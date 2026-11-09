@@ -111,9 +111,9 @@ export default function App() {
   const [profileAvailable, setProfileAvailable] = useState(false)
   const [panelLayout, setPanelLayout] = useState(DEFAULT_LAYOUT)
   const [settings, setSettings] = useState({
-    seed: 2025, node_count: 8, duration_seconds: 20, playback_speed: 1, uav_speed_mps: 10,
+    seed: 2025, node_count: 2, duration_seconds: 20, playback_speed: 1, uav_speed_mps: 0,
     uav_min_altitude_m: null, uav_max_altitude_m: null,
-    initial_energy_j: 20000, traffic_pattern: 'Poisson', packet_arrival_rate: 5,
+    initial_energy_j: 20000, traffic_pattern: 'Periodic', packet_arrival_rate: 1,
     routing: 'Greedy', routing_parameter_values: {}, mac: 'CSMA_CA', mobility: 'GaussMarkov3D',
     channel_mode: 'online',
     los_a2a_model: 'free_space', nlos_a2a_model: 'urban', calibration_profile: null,
@@ -483,7 +483,7 @@ export default function App() {
             <LayerSection index="01" title="SIMULATION / UAV" open={openLayers.simulation} disabled={settingsLocked} onToggle={() => toggleLayer('simulation')}>
               <div className="field-row"><Field label="Nodes"><input type="number" min="2" max="50" value={settings.node_count} onChange={(event) => setSetting('node_count', Number(event.target.value))} /></Field><Field label="Duration"><div className="input-unit"><input type="number" min="1" max="3600" value={settings.duration_seconds} onChange={(event) => setSetting('duration_seconds', Number(event.target.value))} /><span>s</span></div></Field></div>
               <Field label="Mobility model"><select value={settings.mobility} onChange={(event) => setSetting('mobility', event.target.value)}>{options.mobility.map((item) => <option key={item}>{item}</option>)}</select></Field>
-              <div className="field-row"><Field label="UAV speed"><div className="input-unit"><input type="number" min="0.1" max="100" step="0.5" value={settings.uav_speed_mps} onChange={(event) => setSetting('uav_speed_mps', Number(event.target.value))} /><span>m/s</span></div></Field><Field label="Initial energy"><div className="input-unit"><input type="number" min="1" step="100" value={settings.initial_energy_j} onChange={(event) => setSetting('initial_energy_j', Number(event.target.value))} /><span>J</span></div></Field></div>
+              <div className="field-row"><Field label="UAV speed"><div className="input-unit"><input type="number" min="0" max="100" step="0.5" value={settings.uav_speed_mps} onChange={(event) => setSetting('uav_speed_mps', Number(event.target.value))} /><span>m/s</span></div></Field><Field label="Initial energy"><div className="input-unit"><input type="number" min="1" step="100" value={settings.initial_energy_j} onChange={(event) => setSetting('initial_energy_j', Number(event.target.value))} /><span>J</span></div></Field></div>
               <div className="field-row"><Field label="Min altitude (Z)"><div className="input-unit"><input type="number" min="0" max="10000" step="1" value={settings.uav_min_altitude_m ?? ''} onChange={(event) => setSetting('uav_min_altitude_m', Number(event.target.value))} /><span>m</span></div></Field><Field label="Max altitude (Z)"><div className="input-unit"><input type="number" min="0.1" max="10000" step="1" value={settings.uav_max_altitude_m ?? ''} onChange={(event) => setSetting('uav_max_altitude_m', Number(event.target.value))} /><span>m</span></div></Field></div>
               <div className="field-row"><Field label="Random seed"><input type="number" value={settings.seed} onChange={(event) => setSetting('seed', Number(event.target.value))} /></Field><Field label="Playback"><div className="segmented">{[0.5, 1, 2, 5].map((speed) => <button type="button" key={speed} className={settings.playback_speed === speed ? 'active' : ''} onClick={() => setSetting('playback_speed', speed)}>{speed}x</button>)}</div></Field></div>
             </LayerSection>

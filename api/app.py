@@ -24,15 +24,15 @@ from utils import config
 
 class StartRequest(BaseModel):
     seed: int = 2025
-    node_count: int = Field(default=8, ge=2, le=50)
+    node_count: int = Field(default=2, ge=2, le=50)
     duration_seconds: float = Field(default=20, gt=0, le=3600)
     playback_speed: float = Field(default=1, gt=0, le=100)
-    uav_speed_mps: float = Field(default=10, gt=0, le=100)
+    uav_speed_mps: float = Field(default=0, ge=0, le=100)
     uav_min_altitude_m: float | None = Field(default=None, ge=0, le=10000)
     uav_max_altitude_m: float | None = Field(default=None, gt=0, le=10000)
     initial_energy_j: float = Field(default=20000, gt=0, le=1e9)
-    traffic_pattern: str = Field(default="Poisson", pattern="^(Uniform|Poisson)$")
-    packet_arrival_rate: float = Field(default=5, gt=0, le=1000)
+    traffic_pattern: str = Field(default="Periodic", pattern="^(Uniform|Poisson|Periodic|Threshold|Adaptive)$")
+    packet_arrival_rate: float = Field(default=1, gt=0, le=1000)
     routing: str = "Greedy"
     routing_parameters: dict[str, float] = Field(default_factory=dict)
     mac: str = "CSMA_CA"
@@ -161,7 +161,7 @@ def options():
         "routing_parameters": ROUTING_PARAMETER_DEFINITIONS,
         "mac": ["CSMA_CA", "Pure_Aloha", "TDMA"],
         "mobility": ["GaussMarkov3D", "RandomWalk3D", "RandomWaypoint3D"],
-        "traffic_pattern": ["Uniform", "Poisson"],
+        "traffic_pattern": ["Uniform", "Poisson", "Periodic", "Threshold", "Adaptive"],
         "channel_mode": ["online", "hybrid", "on_demand", "a2a"],
         "los_a2a_model": list(LOS_MODELS),
         "nlos_a2a_model": list(NLOS_MODELS),
@@ -232,6 +232,7 @@ def start_simulation(request: StartRequest):
     try:
         _apply_channel_settings(request)
         if request.channel_mode == "on_demand":
+            print("test")
             expected_profile = profile_fingerprint(
                 request.los_a2a_model,
                 request.nlos_a2a_model,
