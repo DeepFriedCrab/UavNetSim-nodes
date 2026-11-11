@@ -243,8 +243,6 @@ class Drone:
                 config.GL_ID_DATA_PACKET += 1  # data packet id
 
 
-                self.residual_energy = max(0.0, self.residual_energy - 1) #-----------------------------------------------------TODO NEEDS UPDATING--------------------------------------------------------
-
                 # randomly choose a destination
                 all_candidate_list = [i for i in range(self.simulator.n_drones)]
                 all_candidate_list.remove(self.identifier)

@@ -16,6 +16,15 @@ function clamp(value, minimum, maximum) {
   return Math.min(maximum, Math.max(minimum, value))
 }
 
+const clearCacheData = () => {
+    caches.keys().then((names) => {
+        names.forEach((name) => {
+            caches.delete(name);
+        });
+    });
+    alert("Complete Cache Cleared");
+};
+
 function sceneCoordinateBounds(scene) {
   const zValues = [0]
   scene.terrain?.vertices.forEach((point) => zValues.push(point.z))
@@ -554,7 +563,7 @@ export default function App() {
             planning={mode === 'planning' ? { start: planningSettings.start, goal: planningSettings.goal, path: planningResult?.path || [], activePick } : null}
             onPlanningPoint={selectPlanningPoint}
           />
-          {mode === 'network' && selected && <div className="node-inspector"><button onClick={() => setSelectedNode(null)} title="Close">x</button><small>UAV {String(selected.id).padStart(2, '0')}</small><strong>{selected.energy_j.toFixed(0)} J</strong><span>X {selected.position[0].toFixed(1)} &nbsp; Y {selected.position[1].toFixed(1)} &nbsp; Z {selected.position[2].toFixed(1)}</span><span>Speed {selectedSpeed.toFixed(1)} m/s &nbsp; Queue {selected.queue_size}</span></div>}
+          {mode === 'network' && selected && <div className="node-inspector"><button onClick={() => setSelectedNode(null)} title="Close">x</button><small>UAV {String(selected.id).padStart(2, '0')}</small><strong>{selected.energy_j.toFixed(8)} J</strong><span>X {selected.position[0].toFixed(1)} &nbsp; Y {selected.position[1].toFixed(1)} &nbsp; Z {selected.position[2].toFixed(1)}</span><span>Speed {selectedSpeed.toFixed(1)} m/s &nbsp; Queue {selected.queue_size}</span></div>}
           {mode === 'planning' && activePick && <div className="pick-hint"><Crosshair size={15} />Click the scene to set {activePick.toUpperCase()} at Z {planningSettings[activePick].z.toFixed(0)} m</div>}
         </section>
 

@@ -122,6 +122,8 @@ class Simulator:
             self.env.now,
             metrics=self.metrics.snapshot(),
         )
+        for i, x in enumerate(self.node_snapshot()):
+            print(f"Energy Percentage (Drone {i}): {x["energy_j"]/config.INITIAL_ENERGY * 100}% ({x["energy_j"]}/{config.INITIAL_ENERGY})")
 
     def node_snapshot(self):
         return [
